@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Uma carta para paloma</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Fraunces:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1b1430;--bg2:#2a1d44;--paper:#f1ecf6;--ink:#2b2140;--rose:#c4456b;--gold:#e9b84e;--muted:#a99cc4;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 50% 0,var(--bg2),var(--bg) 70%);color:var(--paper);font-family:"Fraunces",Georgia,serif;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:24px 18px 64px}
+
+/* Painel de personalização */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#ffffff12;border-radius:14px;padding:14px;margin-bottom:28px}
+.tools.hide{display:none}
+.tools label{display:flex;flex-direction:column;font-size:.85rem;color:var(--muted);gap:4px}
+.tools label.wide{grid-column:1/-1}
+.tools input{font:inherit;font-size:1rem;padding:8px 10px;border-radius:8px;border:1px solid #ffffff30;background:#0000003a;color:var(--paper)}
+.tools input:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.tools button{grid-column:1/-1}
+button{font:inherit;cursor:pointer;border:0;border-radius:999px;padding:12px 22px}
+.ghost{background:#ffffff1c;color:var(--paper)}
+
+/* Carta */
+.letter{background:var(--paper);color:var(--ink);border-radius:6px 6px 14px 14px;padding:38px 30px 34px;box-shadow:0 18px 50px #00000066;transform:rotate(-.6deg)}
+.letter p{font-family:"Caveat","Segoe Script",cursive;font-size:1.65rem;line-height:1.35;margin:0 0 .8em}
+.letter .to{font-size:2rem;font-weight:600;color:var(--rose)}
+.letter .from{text-align:right;margin:1.2em 0 0}
+.heart{color:var(--rose)}
+
+/* Ingresso */
+.ticket{position:relative;margin:38px 0 22px;background:var(--gold);color:#2a1d10;border-radius:14px;display:grid;grid-template-columns:1fr auto;overflow:hidden;box-shadow:0 14px 40px #0006}
+.ticket:before,.ticket:after{content:"";position:absolute;left:calc(100% - 96px - 10px);width:20px;height:20px;border-radius:50%;background:var(--bg)}
+.ticket:before{top:-10px}
+.ticket:after{bottom:-10px}
+.main{padding:22px 22px 22px 24px}
+.main h2{font-size:1.5rem;margin:0 0 6px;font-weight:700}
+.main p{margin:2px 0;font-size:1rem}
+.stub{width:96px;border-left:2px dashed #2a1d1066;display:flex;align-items:center;justify-content:center;padding:10px;text-align:center;font-style:italic;font-size:.95rem}
+
+/* Pergunta e botões */
+.ask{text-align:center}
+.ask h3{font-size:1.4rem;font-weight:400;margin:0 0 16px}
+.ask .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;min-height:52px}
+.yes{background:var(--rose);color:#fff;font-weight:700}
+.no{background:#ffffff1c;color:var(--paper);transition:transform .25s}
+.reply{display:none;font-size:1.2rem;margin-top:8px}
+.reply.on{display:block}
+.fly{position:fixed;bottom:-30px;font-size:1.6rem;pointer-events:none;animation:up 2.4s ease-out forwards}
+@keyframes up{to{transform:translateY(-110vh) rotate(20deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.fly{display:none}.no{transition:none}}
+@media (max-width:420px){
+  .letter{padding:28px 20px}
+  .letter p{font-size:1.5rem}
+  .ticket{grid-template-columns:1fr 78px}
+  .ticket:before,.ticket:after{left:calc(100% - 78px - 10px)}
+  .stub{width:78px}
+}
+</style>
+</head>
+<body>
+<main>
+
+  <!-- Painel: só filme, dia e horário -->
+  <section class="tools" id="tools" aria-label="Personalizar">
+    <label class="wide">Filme<input id="iFilme" value="Um filme só nosso"></label>
+    <label>Dia<input id="iDia" value="Sábado"></label>
+    <label>Horário<input id="iHora" value="19h30"></label>
+    <button class="ghost" id="prev" type="button">Ver como vai aparecer</button>
+  </section>
+
+  <!-- Carta: edite os textos e nomes direto aqui -->
+  <article class="letter">
+    <p class="to">Meu amor,</p>
+    <p>talvez Você lembra da nossa conversa de sábado.</p>
+    <p>onde eu disse que aparência não era o mais importante, e que só era uma parte da beleza de uma pessoa</p>
+    <p>pelo pouco que eu te conheço percebi que a beleza extraordinária, é somente um flexo da beleza interior <span class="heart">♥</span></p>
+    <p>Por isso esta carta vem com um convite.</p>
+    <p class="from">Com todo o meu carinho,<br>Gabriel Pereira</p>
+  </article>
+
+  <!-- Ingresso: o cinema fica fixo aqui -->
+  <section class="ticket" aria-label="Convite">
+    <div class="main">
+      <h2 id="tFilme">Um filme só nosso</h2>
+      <p><span id="tDia">Sábado</span>, às <span id="tHora">19h30</span></p>
+      <p>Cinema da cidade</p>
+      <p>Pipoca grande por minha conta.</p>
+    </div>
+    <div class="stub">Admit two</div>
+  </section>
+
+  <!-- Pergunta -->
+  <section class="ask">
+    <h3>Você vai ao cinema comigo?</h3>
+    <div class="row">
+      <button class="yes" id="yes" type="button">Aceito o convite</button>
+      <button class="no" id="no" type="button">Vou pensar</button>
+    </div>
+    <p class="reply" id="reply" role="status"></p>
+  </section>
+
+</main>
+
+<script>
+(function () {
+  // Liga os campos do painel ao ingresso
+  var pares = [['iFilme', 'tFilme'], ['iDia', 'tDia'], ['iHora', 'tHora']];
+  pares.forEach(function (p) {
+    var campo = document.getElementById(p[0]);
+    var alvo = document.getElementById(p[1]);
+    campo.addEventListener('input', function () {
+      alvo.textContent = campo.value || ' ';
+    });
+  });
+
+  // Esconde o painel para ver a página final
+  var tools = document.getElementById('tools');
+  document.getElementById('prev').addEventListener('click', function () {
+    tools.classList.add('hide');
+    window.scrollTo({ top: 0 });
+  });
+
+  // Botão "Aceito": mensagem e corações subindo
+  var reply = document.getElementById('reply');
+  var yes = document.getElementById('yes');
+  yes.addEventListener('click', function () {
+    reply.textContent = 'Já estou contando as horas até lá ♥';
+    reply.classList.add('on');
+    for (var i = 0; i < 14; i++) {
+      (function (i) {
+        setTimeout(function () {
+          var h = document.createElement('span');
+          h.className = 'fly';
+          h.textContent = '♥';
+          h.style.left = (Math.random() * 92) + '%';
+          h.style.color = i % 2 ? '#c4456b' : '#e9b84e';
+          document.body.appendChild(h);
+          setTimeout(function () { h.remove(); }, 2500);
+        }, i * 110);
+      })(i);
+    }
+  });
+
+  // Botão "Vou pensar": foge 3 vezes e depois vira "Tá bom, aceito"
+  var no = document.getElementById('no');
+  var tries = 0;
+  function dodge() {
+    tries++;
+    if (tries < 4) {
+      var x = Math.random() * 120 - 60;
+      var y = Math.random() * 50 - 25;
+      no.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+    } else {
+      no.style.transform = 'none';
+      no.textContent = 'Tá bom, aceito';
+      no.addEventListener('click', function () { yes.click(); }, { once: true });
+    }
+  }
+  no.addEventListener('mouseenter', function () { if (tries < 4) dodge(); });
+  no.addEventListener('click', function () { if (tries < 4) dodge(); });
+})();
+</script>
+</body>
+</html>
